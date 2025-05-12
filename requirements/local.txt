@@ -1,0 +1,21 @@
+# Local development dependencies go here
+-r base.txt
+pre-commit>=3.5.0
+autopep8>=2.0.4
+black>=23.12.0
+django-extensions>=3.2.3
+flake8>=6.1.0
+
+
+# Testing
+# ------------------------------------------------------------------------------
+pytest==7.4.3  # https://github.com/pytest-dev/pytest
+pytest-django>=4.5.2  # https://github.com/pytest-dev/pytest-django
+pytest-factoryboy>=2.5.0  # https://github.com/pytest-factoryboy/pytest-factoryboy
+pytest-cov>=4.1.0  # https://github.com/pytest-dev/pytest-cov
+pytest-mock>=3.12.0  # https://github.com/pytest-dev/pytest-mock
+pytest-xdist>=3.5.0  # https://github.com/pytest-dev/pytest-xdist
+
+factory-boy>=3.2.1  # https://github.com/FactoryBoy/factory_boy
+coverage>=6.4.4  # https://github.com/nedbat/coveragepy
+django-coverage-plugin>=2.0.3  # https://github.com/nedbat/django_coverage_plugin

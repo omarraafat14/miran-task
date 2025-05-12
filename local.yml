@@ -1,0 +1,114 @@
+
+services:
+  postgres_db:
+    image: postgres:16
+    container_name: miran_db
+    volumes:
+      - miran_local_postgres_data:/var/lib/postgresql/data:Z
+    env_file: .docker.env
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    command: postgres -c 'max_connections=100' -c 'shared_buffers=256MB' -c 'work_mem=8MB'
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_INITDB_ARGS: "--data-checksums"
+    # add this for logging all queries to console
+    # command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
+
+  web:
+    build:
+      context: .
+      dockerfile: ./compose/local/Dockerfile
+    image: miran_web
+    container_name: miran_web
+    restart: on-failure
+    command: /start.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    env_file: .docker.env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: miran_mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    logging:
+      driver: none
+
+  rqworker:
+    build:
+      context: .
+      dockerfile: ./compose/local/Dockerfile
+    container_name: miran_rqworker
+    restart: on-failure
+    command: >
+      python manage.py rqworker 
+      high
+      default
+      low
+      --with-scheduler
+      --worker-class rq.worker.HerokuWorker
+      --max-jobs 1000
+    volumes:
+      - .:/code
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres_db:
+        condition: service_healthy
+    env_file: .docker.env
+    # healthcheck:
+    #   test: ["CMD", "ps", "aux", "|", "grep", "rqworker"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    container_name: miran_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - miran_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: miran_redis_commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  miran_local_postgres_data: {}
+  miran_redis_data: {}
+
+networks:
+  default:
+    name: miran_network

@@ -1,0 +1,39 @@
+[flake8]
+max-line-length = 88
+
+# Exclude directories and files
+exclude =
+    .git,
+    .github,
+    .gitlab-ci.yml,
+    .flake8,
+    .env,
+    env/,
+    .venv/,
+    app_template/,
+    */migrations/*,
+    */__pycache__/*,
+    */tests/*,
+    */static/*,
+    */media/*,
+    */templates/*,
+    */services/*,
+    */node_modules/*,
+    */build/*,
+    */dist/*,
+    */docs/*
+
+# Ignore specific error codes
+ignore =
+    E203,
+    E266,
+    E501,
+    W503,
+    F405,
+    F403
+
+# Set the complexity threshold
+max-complexity = 10
+
+# Show the source of each error
+show-source = True

@@ -1,0 +1,56 @@
+{
+  "files.exclude": {
+    "**/*.pyc": true,
+    "**/mysql_db": true
+  },
+  "editor.defaultFormatter": "ms-python.black-formatter",
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "search.exclude": {
+    "**/env": true,
+    "**/.git": true,
+    "**/mysql_db": true
+  },
+  "python.languageServer": "Pylance",
+  "python.defaultInterpreterPath": "${workspaceFolder}/env/bin/python",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestPath": "${workspaceFolder}/env/bin/pytest",
+  "files.associations": {
+    "**/*.html": "html",
+    "**/templates/**/*.html": "django-html",
+    "**/templates/**/*": "django-txt",
+    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+  },
+  "editor.rulers": [88],
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.suggestSelection": "first",
+  "terminal.integrated.env.linux": {
+    "PYTHONPATH": "${workspaceFolder}"
+  },
+  "git.enableSmartCommit": true,
+  "git.autofetch": true,
+  "cSpell.words": [
+    "django",
+    "djangorestframework",
+    "pytest",
+    "flake8",
+    "isort",
+    "pylint",
+    "mypy",
+    "pydantic",
+    "dotenv",
+    "psycopg",
+    "uWSGI"
+  ],
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  }
+}

@@ -1,0 +1,44 @@
+exclude: "docs|node_modules|migrations|.git|.tox|.dcg_templates/*"
+default_stages: [pre-commit]
+fail_fast: true
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        name: Remove trailing whitespace
+      - id: end-of-file-fixer
+        name: Ensure files end with a newline
+      - id: check-yaml
+        name: Validate YAML files
+      - id: detect-private-key
+        name: Detect private keys
+      - id: debug-statements
+        name: Check for debug statements
+      - id: check-executables-have-shebangs
+        name: Check executables have shebangs
+
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args: ["--config=.flake8"]
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.7
+    hooks:
+      - id: bandit
+        args: ["-c", "pyproject.toml"]
+        additional_dependencies: ["bandit[toml]"]
+

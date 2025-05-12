@@ -1,0 +1,33 @@
+{
+    "recommendations": [
+        // Python
+        "ms-python.python",  // Main Python extension
+        "ms-python.vscode-pylance",  // Python language server
+        "ms-python.black-formatter",  // Black formatter
+        "ms-python.isort",  // Import sorting
+        "ms-python.flake8",  // Linting
+        
+        // Django
+        "batisteo.vscode-django",  // Django support
+        "wholroyd.jinja",  // Template syntax
+        "formulahendry.code-runner",  // Run code snippets
+        
+        // Testing
+        "littlefoxteam.vscode-python-test-adapter",  // Test explorer
+        "hbenl.vscode-test-explorer",  // Test explorer UI
+        
+        // Docker
+        "ms-azuretools.vscode-docker",  // Docker support
+        "ms-vscode-remote.remote-containers",  // Remote container development
+        
+        // Git
+        "eamodio.gitlens",  // Git blame & history
+        "mhutchie.git-graph",  // Git graph visualization
+        
+        // General
+        "streetsidesoftware.code-spell-checker",  // Spell checking
+        "yzhang.markdown-all-in-one",  // Markdown support
+        "redhat.vscode-yaml",  // YAML support
+        "mikestead.dotenv",  // .env file support
+    ]
+}
