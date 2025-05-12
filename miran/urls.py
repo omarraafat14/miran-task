@@ -18,6 +18,7 @@ from rest_framework.authentication import SessionAuthentication
 main_patterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path("api/", include("miran.users.urls")),
+    path("api/", include("miran.products.urls")),
     path("rq/", include("django_rq.urls")),
 )
 # swagger urls and configuration
