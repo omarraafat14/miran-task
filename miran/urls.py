@@ -14,6 +14,9 @@ from rest_framework.authentication import SessionAuthentication
 
 # Admin settings
 
+i18n_path = [
+    path("i18n/", include("django.conf.urls.i18n")),
+]
 
 main_patterns = i18n_patterns(
     path("admin/", admin.site.urls),
@@ -35,7 +38,7 @@ schema_view = get_schema_view(
     patterns=main_patterns,
 )
 
-urlpatterns = main_patterns
+urlpatterns = i18n_path + main_patterns
 
 
 urlpatterns += [

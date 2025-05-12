@@ -225,6 +225,7 @@ UNFOLD = {
     "SITE_TITLE": "Miran",
     "SITE_HEADER": "Miran",
     "ENVIRONMENT": "miran.settings.base.environment_callback",
+    "SHOW_LANGUAGES": True,
     "SIDEBAR": {
         "show_search": True,
         "show_all_applications": True,
@@ -277,6 +278,14 @@ UNFOLD = {
                 ],
             },
         ],
+    },
+    "EXTENSIONS": {
+        "modeltranslation": {
+            "flags": {
+                "en": "🇬🇧",
+                "ar": "🇸🇦",
+            },
+        },
     },
 }
 
