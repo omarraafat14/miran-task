@@ -2,6 +2,8 @@ from datetime import timedelta
 from os.path import join, normpath
 from pathlib import Path
 
+from django.urls import reverse_lazy
+
 from decouple import config
 
 
@@ -220,10 +222,62 @@ SILKY_META = True
 """Unfold"""
 
 UNFOLD = {
-    "SITE_TITLE": "miran",
-    "SITE_HEADER": "miran",
+    "SITE_TITLE": "Miran",
+    "SITE_HEADER": "Miran",
     "ENVIRONMENT": "miran.settings.base.environment_callback",
-    "SIDEBAR": {"show_search": True},
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": True,
+        "navigation": [
+            {
+                "title": "Navigation",
+                "items": [
+                    {
+                        "title": "Dashboard",
+                        "icon": "dashboard",
+                        "link": reverse_lazy("admin:index"),
+                    },
+                ],
+            },
+            {
+                "title": "Products",
+                "collapsible": 0,
+                "items": [
+                    {
+                        "title": "Brands",
+                        "icon": "branding_watermark",
+                        "link": reverse_lazy("admin:products_brand_changelist"),
+                    },
+                    {
+                        "title": "Categories",
+                        "icon": "category",
+                        "link": reverse_lazy("admin:products_category_changelist"),
+                    },
+                    {
+                        "title": "Products",
+                        "icon": "inventory_2",
+                        "link": reverse_lazy("admin:products_product_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": "Users & Groups",
+                "collapsible": 0,
+                "items": [
+                    {
+                        "title": "Users",
+                        "icon": "person",
+                        "link": reverse_lazy("admin:users_user_changelist"),
+                    },
+                    {
+                        "title": "Groups",
+                        "icon": "group",
+                        "link": reverse_lazy("admin:auth_group_changelist"),
+                    },
+                ],
+            },
+        ],
+    },
 }
 
 
