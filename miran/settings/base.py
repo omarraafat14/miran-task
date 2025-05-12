@@ -45,7 +45,7 @@ THIRD_PARTY_APPS = [
 # local apps
 LOCAL_APPS = [
     "miran.users",
-    "miran.products"
+    "miran.products",
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 SITE_ID = 1
