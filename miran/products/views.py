@@ -17,8 +17,17 @@ class BrandViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.Product.objects.active()
+    queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
     lookup_field = "sku"
     filterset_class = filters.ProductFilter
     ordering_fields = ["price", "created_at"]
+
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .active()
+            .select_related("brand", "category")
+            .prefetch_related("nutrition")
+        )
