@@ -62,8 +62,8 @@ makemessages:
 compilemessages:
 	@python manage.py compilemessages
 
-model:
-	@python manage.py create_model
+seed:
+	@python manage.py seed_models
 
 # Linting and formatting
 lint:
