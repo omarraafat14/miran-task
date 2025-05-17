@@ -177,14 +177,14 @@ REST_FRAMEWORK = {
         "miran.services.filters.CustomOrderingFilter",
     ),
     "EXCEPTION_HANDLER": "miran.services.exceptions.validation_error_handler",
-    # "DEFAULT_THROTTLE_CLASSES": [
-    #     "rest_framework.throttling.UserRateThrottle",
-    #     "rest_framework.throttling.AnonRateThrottle",
-    # ],
-    # "DEFAULT_THROTTLE_RATES": {
-    #     "anon": "100/min",
-    #     "user": "100/min",
-    # },
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.AnonRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "30/min",
+        "user": "60/min",
+    },
 }
 
 """ JWT Settings"""
