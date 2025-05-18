@@ -41,7 +41,7 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "import_export",
     "django_filters",
-    "drf_yasg",
+    "drf_spectacular",
     "silk",
     "django_rq",
 ]
@@ -166,6 +166,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 """ REST FRAMEWORK """
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
@@ -202,19 +203,37 @@ SIMPLE_JWT = {
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 
-""" SWAGGER_SETTINGS """
-SWAGGER_SETTINGS = {
-    "DEFAULT_AUTO_SCHEMA_CLASS": "miran.swagger.CustomSwaggerAutoSchema",
-    "LOGIN_URL": "/admin/login/",
-    "LOGOUT_URL": "/admin/logout/",
-    "PERSIST_AUTH": True,
-    "DEEP_LINKING": True,
-    "DOC_EXPANSION": "none",
-    "SECURITY_DEFINITIONS": {
-        "JWT": {"type": "apiKey", "name": "Authorization", "in": "header"},
+""" SPECTACULAR_SETTINGS """
+SPECTACULAR_SETTINGS = {
+    "TITLE": "elevate_rebuild API",
+    "DESCRIPTION": "elevate_rebuild Swagger Documentation",
+    "VERSION": "v1",
+    "SCHEMA_PATH_PREFIX": "/en/api/",
+    "SCHEMA_PATH_PREFIX_TRIM": False,
+    "DEFAULT_AUTO_SCHEMA_CLASS": "elevate_rebuild.swagger.CustomSwaggerAutoSchema",
+    "DEFAULT_GENERATOR_CLASS": "drf_spectacular.generators.SchemaGenerator",
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "docExpansion": "none",
+        "filter": True,
+        "displayOperationId": True,
+        "displayRequestDuration": True,
+        "theme": "dark",
     },
+    "SECURITY": [
+        {
+            "JWT": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        }
+    ],
+    "SERVE_AUTHENTICATION": ["rest_framework.authentication.SessionAuthentication"],
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
+    "SERVE_INCLUDE_SCHEMA": True,
 }
-
 
 """silk"""
 SILKY_AUTHENTICATION = True

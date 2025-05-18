@@ -1,11 +1,7 @@
-from drf_yasg.generators import OpenAPISchemaGenerator
-from drf_yasg.inspectors import SwaggerAutoSchema
+# from drf_spectacular.generators import SchemaGenerator
+
+from drf_spectacular.openapi import AutoSchema
 
 
-class CustomSwaggerAutoSchema(SwaggerAutoSchema):
-    pass
-
-
-class CustomOpenAPISchemaGenerator(OpenAPISchemaGenerator):
-    def determine_path_prefix(self, paths):
-        return "/en/api/"
+class CustomSwaggerAutoSchema(AutoSchema):
+    pass  # Add custom logic here if needed

@@ -20,4 +20,4 @@ echo ----------------- done migration -----------------
 sudo  supervisorctl restart miran
 check_okay "error restarting"
 echo ----------------- done restarting supervisor task -----------------
-' | ssh b1L-new
+' | ssh miran
