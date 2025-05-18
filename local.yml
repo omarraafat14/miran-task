@@ -43,44 +43,6 @@ services:
       retries: 3
       start_period: 40s
 
-  mailhog:
-    image: mailhog/mailhog
-    container_name: miran_mailhog
-    ports:
-      - "8025:8025"
-      - "1025:1025"
-    logging:
-      driver: none
-
-  rqworker:
-    build:
-      context: .
-      dockerfile: ./compose/local/Dockerfile
-    container_name: miran_rqworker
-    restart: on-failure
-    command: >
-      python manage.py rqworker 
-      high
-      default
-      low
-      --with-scheduler
-      --worker-class rq.worker.HerokuWorker
-      --max-jobs 1000
-    volumes:
-      - .:/code
-    depends_on:
-      redis:
-        condition: service_healthy
-      postgres_db:
-        condition: service_healthy
-    env_file: .docker.env
-    # healthcheck:
-    #   test: ["CMD", "ps", "aux", "|", "grep", "rqworker"]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 20s
-
   redis:
     image: redis:7-alpine
     container_name: miran_redis
