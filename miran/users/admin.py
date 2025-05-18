@@ -8,7 +8,6 @@ from django.utils.translation import gettext_lazy as _
 
 from . import models
 from ..services.admin import BaseModelAdmin
-from unfold.admin import StackedInline
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 
 

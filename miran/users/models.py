@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from . import conf, managers, mixins, validations
+from . import managers, mixins
 
 
 class User(mixins.UserMixin, AbstractUser):

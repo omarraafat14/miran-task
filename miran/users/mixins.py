@@ -15,7 +15,8 @@ class UserOtp:
     def generate_otp(self):
         return get_random_string(length=4, allowed_chars="0123456789")
 
-    def send_sms(self, phone, text): ...
+    def send_sms(self, phone, text):
+        pass
 
 
 class UserMixin(UserOtp):

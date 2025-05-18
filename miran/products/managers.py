@@ -1,7 +1,6 @@
 from django.contrib.postgres.search import (
     SearchQuery,
     SearchRank,
-    TrigramSimilarity,
     TrigramWordSimilarity,
 )
 from django.db import models

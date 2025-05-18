@@ -11,17 +11,10 @@ This module contains comprehensive tests for all aspects of the search implement
 7. Performance monitoring
 """
 
-from unittest.mock import MagicMock, patch
+from miran.products.models import Brand, Category, Product
 
-from miran.products.filters import ProductFilter
-from miran.products.models import Brand, Category, NutritionFacts, Product
-
-from django.contrib.postgres.search import SearchQuery, SearchVector
-from django.core.cache import cache
-from django.db.models import Q
-from django.test import TestCase, override_settings
-
-import pytest
+from django.contrib.postgres.search import SearchVector
+from django.test import TestCase
 
 
 class TestSimilarityThreshold(TestCase):
