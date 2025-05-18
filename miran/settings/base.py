@@ -345,3 +345,7 @@ RQ_QUEUES = {
 }
 # RQ Dashboard (optional, for monitoring)
 RQ_SHOW_ADMIN_LINK = True
+
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"

@@ -105,6 +105,32 @@ services:
       redis:
         condition: service_healthy
 
+  celery:
+    build:
+      context: .
+      dockerfile: ./compose/local/Dockerfile
+    command: celery -A miran worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      redis:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    env_file: .docker.env
+
+  flower:
+    build:
+      context: .
+      dockerfile: ./compose/local/Dockerfile
+    command: celery -A miran flower --port=5555
+    ports:
+      - "5555:5555"
+    depends_on:
+      redis:
+        condition: service_healthy
+    env_file: .docker.env
+
 volumes:
   miran_local_postgres_data: {}
   miran_redis_data: {}

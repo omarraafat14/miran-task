@@ -23,3 +23,5 @@ django-redis>=5.4.0
 redis>=5.0.1
 django-rq>=2.10.1
 rq>=1.15.1
+celery[redis]
+flower
