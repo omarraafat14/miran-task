@@ -24,10 +24,4 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     ordering_fields = ["price", "created_at"]
 
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .active()
-            .select_related("brand", "category")
-            .prefetch_related("nutrition")
-        )
+        return super().get_queryset().active().with_related()
