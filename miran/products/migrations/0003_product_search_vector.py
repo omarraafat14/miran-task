@@ -28,22 +28,6 @@ class Migration(migrations.Migration):
             name="search_vector",
             field=django.contrib.postgres.search.SearchVectorField(null=True),
         ),
-        # migrations.RunSQL(
-        #     sql="""
-        #     CREATE TRIGGER search_vector_trigger
-        #     BEFORE INSERT OR UPDATE OF name, description, search_vector
-        #     ON products_product
-        #     FOR EACH ROW EXECUTE PROCEDURE
-        #     tsvector_update_trigger(
-        #         search_vector, 'pg_catalog.english', name, description
-        #     );
-        #     UPDATE products_product SET search_vector = NULL;
-        #     """,
-        #     reverse_sql="""
-        #     DROP TRIGGER IF EXISTS search_vector_trigger
-        #     ON products_product;
-        #     """,
-        # ),
         migrations.RunPython(
             compute_search_vector, reverse_code=migrations.RunPython.noop
         ),
