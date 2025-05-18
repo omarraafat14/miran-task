@@ -1,17 +1,97 @@
-# miran
+# Miran Product Search API
 
-👋 Miran is an AI-powered fitness app that offers smart meal tracking, real-time workout  guidance using computer vision, and engaging fitness challenges. Users can log meals easily, get instant feedback on exercise form, and stay motivated through leaderboards and rewards.
+A robust, multilingual product search API designed for the Miran fitness app, built with Django and PostgreSQL.
+It supports fuzzy matching, and advanced filtering to deliver high-quality, relevant results.
 
-## Development Setup
+
+## 🚀 Features
+
+### 🔍 Advanced Search
+
+- Full-text search in both **English** and **Arabic**
+- **Fuzzy matching** for partial queries and misspellings (e.g. `"protien"` → `"protein"`)
+- Configurable **similarity threshold** via environment variables
+- Weighted fields for relevance tuning (e.g. `name` > `description`)
+
+### ⚡ Performance Optimizations
+
+- PostgreSQL **GIN-indexed** search vectors
+- Fast lookups using **Redis** and Django's caching framework
+- Efficient query planning and low DB overhead
+
+
+
+## 🔎 API Usage
+
+### Basic Search
+
+```
+GET /api/products/?search=protein
+```
+
+### Advanced Filters
+
+```
+GET /api/products/?search=protein&category=supplements&price_min=20&price_max=50
+```
+
+### Python Example
+
+```python
+import requests
+
+response = requests.get(
+    "http://localhost:8000/api/products/",
+    params={"search": "protein", "category": "supplements", "price_min": 20}
+)
+results = response.json()
+```
+
+### Security & Rate Limiting
+
+- To prevent abuse and ensure fair usage, the API uses Django REST Framework's throttling system:
+
+```python
+REST_FRAMEWORK = {
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.AnonRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "30/min",
+        "user": "60/min",
+    },
+}
+```
+- Anonymous users: 5 requests per minute
+- Authenticated users: 10 requests per minute
+
+If you exceed the limit, the API responds with:
+
+```json
+{
+  "detail": "Request was throttled. Expected available in x seconds."
+}
+```
+
+
+
+## 🛠️ Development Setup
 
 ### Prerequisites
-- Python 3.12+
+- Python 3.9+
 - Postgresql 16+
 - Docker and Docker Compose (optional, but recommended)
 - Git
 - Make (optional, but recommended)
 
 ### First Time Setup
+
+0. **Clone the repository**
+```bash
+git clone https://github.com/miran/miran-backend.git
+cd miran-backend
+```
 
 1. **Create and activate virtual environment**
 ```bash
@@ -78,9 +158,12 @@ make format      # Format code
 ### Available Services
 
 - Django web: http://localhost:8000
+- PostgreSQL: localhost:5433
+- Redis: localhost:6379
 - Redis Commander: http://localhost:8081
 - MailHog (email testing): http://localhost:8025
-- PostgreSQL: localhost:5433
+- Celery
+- Flower (celery monitor): http://localhost:5555
 
 ### Production Deployment
 
@@ -105,9 +188,7 @@ python manage.py <command>
 
 Run tests with:
 ```bash
-make test
-# or for specific tests:
-pytest path/to/test.py -v
+python manage.py test
 ```
 
 ### Code Quality Tools
@@ -117,29 +198,3 @@ This project uses:
 - isort for import sorting
 - flake8 for code linting
 - pre-commit for git hooks
-
-### Contributing
-
-1. Create a new branch
-2. Make your changes
-3. Run tests and linting
-4. Submit a pull request
-
-### Troubleshooting
-
-1. **Database Issues**
-   ```bash
-   make docker-clean  # Reset all containers and volumes
-   make up           # Start fresh
-   ```
-
-2. **Permission Issues**
-   ```bash
-   sudo chown -R $USER:$USER .  # Fix ownership
-   ```
-
-### Additional Documentation
-
-- [Django Documentation](https://docs.djangoproject.com/)
-- [DRF Documentation](https://www.django-rest-framework.org/)
-- [Docker Documentation](https://docs.docker.com/)
