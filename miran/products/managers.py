@@ -1,4 +1,9 @@
-from django.contrib.postgres.search import SearchQuery, SearchRank, TrigramSimilarity
+from django.contrib.postgres.search import (
+    SearchQuery,
+    SearchRank,
+    TrigramSimilarity,
+    TrigramWordSimilarity,
+)
 from django.db import models
 
 from .conf import DEFAULT_SIMILARITY_THRESHOLD
@@ -32,7 +37,9 @@ class ProductQueryset(models.QuerySet):
         """
         return self.select_related("brand", "category").prefetch_related("nutrition")
 
-    def full_text_search(self, query: str) -> models.QuerySet:
+    def full_text_search(
+        self, query: str, similarity_threshold: float = DEFAULT_SIMILARITY_THRESHOLD
+    ) -> models.QuerySet:
         """
         Perform full-text search on products using PostgreSQL's search capabilities.
 
@@ -48,13 +55,17 @@ class ProductQueryset(models.QuerySet):
         )
         return (
             self.annotate(
-                rank=SearchRank(models.F("search_vector"), search_query),
-                similarity=TrigramSimilarity("name", query)
-                + TrigramSimilarity("name_ar", query),
+                rank=SearchRank(
+                    models.F("search_vector"),
+                    search_query,
+                    normalization=models.Value(2).bitor(models.Value(4)),
+                ),
+                similarity=TrigramWordSimilarity(query, "name")
+                + TrigramWordSimilarity(query, "name_ar"),
             )
             .filter(
                 models.Q(search_vector=search_query)
-                | models.Q(similarity__gt=DEFAULT_SIMILARITY_THRESHOLD)
+                | models.Q(similarity__gte=similarity_threshold)
             )
             .order_by("-rank", "-similarity")
         )
