@@ -24,19 +24,20 @@ class ProductSerializer(serializers.ModelSerializer):
     brand = BrandSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
     nutrition = NutritionFactsSerializer(read_only=True)
+    rank = serializers.ReadOnlyField()
+    similarity = serializers.ReadOnlyField()
 
     class Meta:
         model = Product
         fields = [
             "id",
             "name",
+            "rank",
+            "similarity",
             "description",
+            "sku",
+            "price",
             "brand",
             "category",
             "nutrition",
-            "sku",
-            "price",
-            "created_at",
-            "updated_at",
-            "is_active",
         ]
