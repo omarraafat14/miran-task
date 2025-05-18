@@ -2,7 +2,7 @@ from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 
-from . import managers
+from . import managers, mixins
 
 
 class Category(models.Model):
@@ -47,7 +47,7 @@ class NutritionFacts(models.Model):
         verbose_name_plural = "Nutrition Facts"
 
 
-class Product(models.Model):
+class Product(mixins.ProductMixin, models.Model):
     # relations
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="products")
     category = models.ForeignKey(
