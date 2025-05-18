@@ -7,7 +7,10 @@ class ProductMixin(LifecycleModelMixin):
     @hook(
         AFTER_SAVE,
         condition=(
-            WhenFieldHasChanged("name", True) | WhenFieldHasChanged("description", True)
+            WhenFieldHasChanged("name_en", True)
+            | WhenFieldHasChanged("name_ar", True)
+            | WhenFieldHasChanged("description_en", True)
+            | WhenFieldHasChanged("description_ar", True)
         ),
     )
     def update_search_vector_async(self):
