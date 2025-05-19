@@ -323,47 +323,30 @@ def environment_callback(request):
 
 # Redis Settings
 REDIS_HOST = config("REDIS_HOST", default="redis")
-REDIS_PORT = config("REDIS_PORT", default=6379)
-REDIS_DB = config("REDIS_DB", default=0)
+REDIS_PORT = config("REDIS_PORT", default=6379, cast=int)
+REDIS_DB = config("REDIS_DB", default=0, cast=int)
 REDIS_PASSWORD = config("REDIS_PASSWORD", default=None)
+REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
 # Cache settings
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}",
+        "LOCATION": REDIS_URL,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            # "PASSWORD": REDIS_PASSWORD,
         },
+        "KEY_PREFIX": "miran",
+        "TIMEOUT": 60 * 60,
     }
 }
-# RQ Configuration
-RQ_QUEUES = {
-    "default": {
-        "HOST": config("REDIS_HOST", default="redis"),
-        "PORT": config("REDIS_PORT", default=6379),
-        "DB": config("REDIS_DB", default=0),
-        "PASSWORD": config("REDIS_PASSWORD", default=None),
-        "DEFAULT_TIMEOUT": 360,
-    },
-    "high": {
-        "HOST": config("REDIS_HOST", default="redis"),
-        "PORT": config("REDIS_PORT", default=6379),
-        "DB": config("REDIS_DB", default=0),
-        "PASSWORD": config("REDIS_PASSWORD", default=None),
-        "DEFAULT_TIMEOUT": 180,
-    },
-    "low": {
-        "HOST": config("REDIS_HOST", default="redis"),
-        "PORT": config("REDIS_PORT", default=6379),
-        "DB": config("REDIS_DB", default=0),
-        "PASSWORD": config("REDIS_PASSWORD", default=None),
-        "DEFAULT_TIMEOUT": 720,
-    },
-}
-# RQ Dashboard (optional, for monitoring)
-RQ_SHOW_ADMIN_LINK = True
 
-CELERY_BROKER_URL = "redis://redis:6379/0"
+
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/1"
+CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}/1"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+
+
+def make_key(key, key_prefix, version):
+    return ":".join([key_prefix, str(version), key])

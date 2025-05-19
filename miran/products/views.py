@@ -1,4 +1,7 @@
-from . import filters, models, serializers
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
+from . import conf, filters, models, serializers
 from rest_framework import viewsets
 
 
@@ -25,3 +28,11 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return super().get_queryset().active().with_related()
+
+    @method_decorator(cache_page(conf.SEARCH_QUERY_CACHE_TIMEOUT, cache="default"))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(conf.SEARCH_QUERY_CACHE_TIMEOUT, cache="default"))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
