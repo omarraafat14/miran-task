@@ -43,7 +43,6 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "drf_spectacular",
     "silk",
-    "django_rq",
 ]
 # local apps
 LOCAL_APPS = [
